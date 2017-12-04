@@ -59,10 +59,10 @@ for i=1;sizeOutIm(1)
 			coorY = sizeImOut(2);
 		end	
     
-        NW = [floor(coorX),floor(coorY)];
-        NE = [floor(coorX)+1,floor(coorY)];
-        SW = [floor(coorX), floor(coorY)+1];
-        SE = [floor(coorX)+1, floor(coorY)+1];
+        NW = im(floor(coorX),floor(coorY));
+        NE = im(floor(coorX)+1,floor(coorY));
+        SW = im(floor(coorX), floor(coorY)+1);
+        SE = im(floor(coorX)+1, floor(coorY)+1);
     
         S = SE * (coorX - floor(coorX)) + SW * (1 - (coorX - floor(coorX)));
         N = NE * (coorX - floor(coorX)) + NW * (1 - (coorX - floor(coorX)));
@@ -73,4 +73,3 @@ for i=1;sizeOutIm(1)
 
 end
 end
-
