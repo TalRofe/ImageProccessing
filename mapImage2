@@ -1,0 +1,55 @@
+function [newIm] = mapImage2 (im,T,sizeOutIm)
+newIm = zeros(sizeOutIm(1), sizeOutIm(2)); % this is the size of this image
+
+% turn the transformation into a column vector to use the calculations
+tempt=zeroes(6,1);
+tempt(1,1)=T(1,1);
+tempt(2,1)=T(1,2);
+tempt(3,1)=T(2,1);
+tempt(4,1)=T(2,2);
+tempt(5,1)=T(1,3);
+tempt(6,1)=T(2,3);
+tempt(7,1)=T(3,1);
+tempt(8,1)=T(3,2);
+
+% temp = this is sizeOutIm(1)*sizeOutIm(2) X 2 matrix. each cell contains
+% the values of indexes.
+% temp2 = temp in one column - as needed to calculate..
+temp=zeros(sizeOutIm(1)*SizeOutIm(2),2);
+temp2=zeros(sizeOutIm(1)*SizeOutIm(2)*2,1);
+for j=1:SizeOutIm(2)%x
+for i=1:sizeOutIm(1)%y
+   temp((j-1)*sizeOutIm(2)+i,1)=j;
+   temp((j-1)*sizeOutIm(2)+i,2)=i;
+end
+end
+for i=1:size(temp,1)
+    temp2(i,1) = temp(i,1);
+    temp2(i+1,1) = temp(i,2);
+    
+    i = i+1;
+end
+% inversing.. now we can get the corresponding indexes in the 'im' image
+matrix = temp2*inv(tempt);
+
+% we get the color for each index in 'newIm' using inrterpolation.
+for i=1;sizeOutIm(1)
+    for j=1:sizeOutIm(2)
+        tempo = (((j-1)*sizeOutIm(2)+i)*2)-1; % calculate the matching position.
+        coorX = matrix(tempo);
+        coorY = matrix(tempo+1);
+    
+        NW = [floor(coorX),floor(coorY)];
+        NE = [floor(coorX)+1,floor(coorY)];
+        SW = [floor(coorX), floor(coorY)+1];
+        SE = [floor(coorX)+1, floor(coorY)+1];
+    
+        S = SE * (coorX - floor(coorX)) + SW * (1 - (coorX - floor(coorX)));
+        N = NE * (coorX - floor(coorX)) + NW * (1 - (coorX - floor(coorX)));
+    
+        V = N * (coorY - floor(coorY)) + S * (coorY - floor(coorY));
+        newIm(i,j) = V;
+    end
+
+end
+end
