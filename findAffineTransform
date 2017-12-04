@@ -1,0 +1,41 @@
+function [T] = findAffineTransform (pointsSet1,pointsSet2)
+temp = size(pointsSet1,1);
+Set1 = zeros(size(pointsSet1,1)*2, 6);
+Set2 = zeros(2*size(pointsSet2,1),1);
+
+for i=1:temp % create the X matrix to calculate the transformation
+    Set1(i,1) = pointsSet1(i,1);
+    Set1(i,2) = pointsSet1(i,2);
+    Set1(i,3) = 0;
+    Set1(i,4) = 0;
+    Set1(i,5) = 1;
+    Set1(i,6) = 0;
+    
+    Set1(i+1,1) = 0;
+    Set1(i+1,2) = 0;
+    Set1(i+1,3) = pointsSet1(i,1);
+    Set1(i+1,4) = pointsSet1(i,2);
+    Set1(i+1,5) = 0;
+    Set1(i+1,6) = 1;
+    
+    i = i+1; % We have already handled the (i+1) row.
+end
+
+for i=1:size(pointsSet2,1) % Turn PS2 into one column as needed for the calculations
+    Set2(i,1) = PointsSet2(i,1);
+    Set2(i+1,1) = PointsSet2(i,2);
+    i = i+1;
+end
+
+temporary = (inv(((Set1)')*(Set1))*(Set1)')*(Set2); % the transformation as a column
+% we turn this column into a matrix 3X3 as demanded
+T = zeros(3,3);
+T(1,1) = temporary(1);
+T(1,2) = temporary(2);
+T(1,3) = temporary(5);
+T(2,1) = temporary(3);
+T(2,2) = temporary(4);
+T(2,3) = temporary(6);
+T(3,3) = 1;
+
+end
