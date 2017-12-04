@@ -1,0 +1,69 @@
+function [imagePts1,imagePts2] = getImagePts(im1,im2)
+temp = zeros(1,2);
+i = 1;
+j = 1;
+k=0; % Get notified whether the user finished to choose (x,y)s
+button = 1; % What button was pressed
+imagePts1 = zeros(1,2);
+imagePts2 = zeros(1,2);
+f2 = figure;
+imshow(im2);
+f1 = figure;
+imshow(im1);
+
+while k==0
+[x,y,button] = ginput(1);
+
+if button == 3 % the user terminates the process of choosing
+k=1;
+end
+
+if button~=3
+
+if gcf == f1 % Check what figure the user chose
+imagePts1(i,1) = x;
+imagePts1(i,2) = y;
+
+elseif gcf == f2 % Just to ensure
+imagePts2(i,1) = x;
+imagePts2(i,2) = y;
+
+else
+break;
+end
+
+end
+
+figure(f2); % Let the user choose (x,y) at the second figure
+
+if button~=3
+[x,y,button] = ginput(1);
+
+if button == 3
+k=1;
+temp = zeros(size(ImagePts1,1)-1,2);
+for j=0:size(ImagePts1,1)-1
+    temp(j,:)=ImagePts1(j,:);
+end
+
+end
+if button~=3
+    
+if gcf == f1
+imagePts1(i,1) = x;
+imagePts1(i,2) = y;
+
+elseif gcf == f2
+imagePts2(i,1) = x;
+imagePts2(i,2) = y;
+
+else
+break;
+end
+end
+
+end
+i = i+1;
+figure(f1);
+end
+end
