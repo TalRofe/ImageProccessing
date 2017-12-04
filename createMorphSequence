@@ -1,0 +1,48 @@
+function createMorphSequence(im1, im2, t_list, transformType)
+[a,b]=getImagePts(im1,im2);
+T = size(t_list);
+if transformType == 0
+    affine1 = findAffineTransform (a,b);
+    affine2 = findAffineTransform (b,a);
+	
+	for k=1:T
+	
+	timg1 = mapImage(im1,t_list(k) * affine1,[size(im1,1),size(im1,2)]);
+	timg2 = mapImage(im2,(1-t_list(k)) * affine2,[size(im2,1),size(im2,2)]);
+	
+	imr = zeroes(size(im1,1),size(im1,2));
+	
+	for j=0:size(im1,2)
+	for i=1:size(im1,1)
+	imr(i,j)= timg1(i,j)*t_list(k)+timg2(i,j)*(1-t_list(k));   
+	end
+	end
+	
+	imshow(imr);
+	end
+	
+elseif transformType == 1
+    projective1 = findProjectiveTransform(a,b);
+    projective2 = findProjectiveTransform(b,a);
+	
+	for k=1:T
+	
+	timg1 = mapImage2(im1,t_list(k) * projective1,[size(im1,1),size(im1,2)]);
+	timg2 = mapImage2(im2,(1-t_list(k)) * projective2,[size(im2,1),size(im2,2)]);
+	
+	imr = zeroes(size(im1,1),size(im1,2));
+	
+	for j=0:size(im1,2)
+	for i=1:size(im1,1)
+	imr(i,j)= timg1(i,j)*t_list(k)+timg2(i,j)*(1-t_list(k));   
+	end
+	end
+	
+	imshow(imr);
+	end
+	
+else
+    disp('erorr');
+end
+
+end
