@@ -38,6 +38,26 @@ for i=1;sizeOutIm(1)
         tempo = (((j-1)*sizeOutIm(2)+i)*2)-1; % calculate the matching position.
         coorX = matrix(tempo);
         coorY = matrix(tempo+1);
+		
+		% if the coordinates exceed out of the size of the image in X axis
+		if coorX < 1:
+			coorX = 1;
+		end
+		
+		% if the coordinates exceed out of the size of the image in Y axis
+		if coorY < 1:
+			coorY = 1;
+		end
+		
+		% if the coordinates exceed out of the size of the image in X axis
+		if coorX > sizeImOut(1):
+			coorX = sizeImOut(1);
+		end
+		
+		% if the coordinates exceed out of the size of the image in Y axis
+		if coorY > sizeOutIm(2):
+			coorY = sizeImOut(2);
+		end	
     
         NW = [floor(coorX),floor(coorY)];
         NE = [floor(coorX)+1,floor(coorY)];
@@ -53,3 +73,4 @@ for i=1;sizeOutIm(1)
 
 end
 end
+
